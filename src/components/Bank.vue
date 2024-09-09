@@ -2,6 +2,7 @@
 import { ref, computed } from "vue";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
+import Header from "./Header.vue";
 
 // calculating balance
 const totalBalance = ref(0);
@@ -55,7 +56,12 @@ const withdrawRequest = () => {
 
 <template>
   <!-- container -->
-  <div class="min-h-screen w-full max-w-screen-md mx-auto px-4 py-12 flex flex-col items-center justify-center gap-4">
+  <div
+    class="min-h-screen w-full max-w-screen-md mx-auto px-4 py-12 flex flex-col items-center justify-center gap-4"
+  >
+    <!-- header section -->
+    <Header />
+
     <!-- balance section -->
     <section class="w-full bg-zinc-100 p-1 rounded-xl">
       <div
