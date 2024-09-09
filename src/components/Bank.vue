@@ -1,8 +1,11 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
-const totalBalance = ref(100);
-const availableBalance = ref(90);
+const totalBalance = ref(100000);
+const accountCharge = computed(() => (totalBalance.value * 1.5) / 100); // 2.5% of the total
+const availableBalance = computed(
+  () => totalBalance.value - accountCharge.value
+);
 </script>
 
 <template>
@@ -17,11 +20,11 @@ const availableBalance = ref(90);
           Acc No: VB_09092024
         </h1>
         <div class="w-full grid grid-cols-2 gap-2">
-          <span class="text-2xl text-center font-medium tracking-tighter">
-            Total Balane: ${{ totalBalance }}
+          <span class="text-xl text-center font-medium tracking-tighter">
+            Total Balance: ${{ totalBalance.toLocaleString() }}
           </span>
-          <span class="text-2xl text-center font-medium tracking-tighter">
-            Available Balane: ${{ availableBalance }}
+          <span class="text-xl text-center font-medium tracking-tighter">
+            Available Balance: ${{ availableBalance.toLocaleString() }}
           </span>
         </div>
       </div>
