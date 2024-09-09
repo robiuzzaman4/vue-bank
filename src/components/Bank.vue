@@ -1,16 +1,29 @@
 <script setup>
 import { ref, computed } from "vue";
 
-const totalBalance = ref(1009000);
+// calculating balance
+const totalBalance = ref(0);
 const accountCharge = computed(() => (totalBalance.value * 1.5) / 100); // 2.5% of the total
-const availableBalance = computed(
-  () => totalBalance.value - accountCharge.value
+const availableBalance = computed(() =>
+  Number((totalBalance.value - accountCharge.value).toFixed(2))
 );
+
+// deposit and withdraw input amounts
+const depositAmount = ref(null);
+const withdrawAmount = ref(null);
+
+// add deposit
+const addDeposit = () => {
+  if (depositAmount.value > 0) {
+    totalBalance.value += depositAmount.value;
+    depositAmount.value = null;
+  }
+};
 </script>
 
 <template>
   <!-- container -->
-  <div class="w-full max-w-screen-sm mx-auto px-4 py-12 grid gap-4">
+  <div class="w-full max-w-screen-md mx-auto px-4 py-12 grid gap-4">
     <!-- balance section -->
     <section class="w-full bg-zinc-100 p-1 rounded-xl">
       <div
@@ -21,7 +34,7 @@ const availableBalance = computed(
         >
           Acc No: VB_09092024
         </h1>
-        <div class="w-full flex items-center justify-between gap-2">
+        <div class="w-full grid grid-cols-2 gap-2">
           <span
             class="text-base sm:text-xl md:text-2xl font-medium tracking-tighter flex flex-col gap-1"
           >
@@ -47,11 +60,14 @@ const availableBalance = computed(
         <div class="w-full h-full bg-white p-6 rounded-lg shadow grid gap-4">
           <h3 class="text-base font-medium">Add Deposite</h3>
           <input
+            v-model="depositAmount"
+            @keyup.enter="addDeposit"
             type="number"
             class="w-full px-3 py-1.5 h-9 rounded-md bg-white border border-emerald-500 focus-visible:outline-none focus:ring-2 focus:ring-transparent focus:ring-offset-4 focus:ring-offset-emerald-100 text-xs"
-             placeholder="Enter your deposit amount"
+            placeholder="Enter your deposit amount"
           />
           <button
+            @click="addDeposit"
             class="w-full px-3 py-1.5 h-9 rounded-md bg-emerald-500 text-white text-sm font-medium"
           >
             Add Deposite
@@ -63,6 +79,7 @@ const availableBalance = computed(
         <div class="w-full h-full bg-white p-6 rounded-lg shadow grid gap-4">
           <h3 class="text-base font-medium">Withdraw Request</h3>
           <input
+            v-model="withdrawAmount"
             type="number"
             class="w-full px-3 py-1.5 h-9 rounded-md bg-white border border-rose-500 focus-visible:outline-none focus:ring-2 focus:ring-transparent focus:ring-offset-4 focus:ring-offset-rose-100 text-xs"
             placeholder="Enter your withdraw amount"
