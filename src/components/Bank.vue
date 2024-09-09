@@ -1,5 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 // calculating balance
 const totalBalance = ref(0);
@@ -17,6 +19,14 @@ const addDeposit = () => {
   if (depositAmount.value > 0) {
     totalBalance.value += depositAmount.value;
     depositAmount.value = null;
+    toast.success("Diposite successfull.", {
+      autoClose: 1000,
+    });
+  } else {
+    toast.warn("Please enter a deposit amount.", {
+      autoClose: 1000,
+    });
+    depositAmount.value = null;
   }
 };
 
@@ -26,17 +36,26 @@ const withdrawRequest = () => {
     if (withdrawAmount.value <= availableBalance.value) {
       totalBalance.value -= withdrawAmount.value;
       withdrawAmount.value = null;
+      toast.success("Witdraw successfull.", {
+        autoClose: 1000,
+      });
     } else {
-      alert("Insufficient balance");
+      toast.error("Insufficient balance.", {
+        autoClose: 1000,
+      });
       withdrawAmount.value = null;
     }
+  } else {
+    toast.warn("Please enter a withdraw amount.", {
+      autoClose: 1000,
+    });
   }
 };
 </script>
 
 <template>
   <!-- container -->
-  <div class="w-full max-w-screen-md mx-auto px-4 py-12 grid gap-4">
+  <div class="min-h-screen w-full max-w-screen-md mx-auto px-4 py-12 flex flex-col items-center justify-center gap-4">
     <!-- balance section -->
     <section class="w-full bg-zinc-100 p-1 rounded-xl">
       <div
@@ -93,6 +112,7 @@ const withdrawRequest = () => {
           <h3 class="text-base font-medium">Withdraw Request</h3>
           <input
             v-model="withdrawAmount"
+            @keyup.enter="withdrawRequest"
             type="number"
             class="w-full px-3 py-1.5 h-9 rounded-md bg-white border border-rose-500 focus-visible:outline-none focus:ring-2 focus:ring-transparent focus:ring-offset-4 focus:ring-offset-rose-100 text-xs"
             placeholder="Enter your withdraw amount"
