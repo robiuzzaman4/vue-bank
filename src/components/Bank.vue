@@ -19,6 +19,19 @@ const addDeposit = () => {
     depositAmount.value = null;
   }
 };
+
+// withdraw request
+const withdrawRequest = () => {
+  if (withdrawAmount.value > 0) {
+    if (withdrawAmount.value <= availableBalance.value) {
+      totalBalance.value -= withdrawAmount.value;
+      withdrawAmount.value = null;
+    } else {
+      alert("Insufficient balance");
+      withdrawAmount.value = null;
+    }
+  }
+};
 </script>
 
 <template>
@@ -85,6 +98,7 @@ const addDeposit = () => {
             placeholder="Enter your withdraw amount"
           />
           <button
+            @click="withdrawRequest"
             class="w-full px-3 py-1.5 h-9 rounded-md bg-rose-500 text-white text-sm font-medium"
           >
             Make Withdraw
